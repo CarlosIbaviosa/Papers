@@ -81,7 +81,7 @@ Finally, face recognition is also affected by image presentation rate. Several s
 ## Factors affecting fingerprint recognition
 The main factor affecting fingerprint recognition is that of experience. Several studies suggest that fingerprint examiners are reliably more accurate at discriminating between different fingerprints compared to trainees, amateurs, and novices \colorbox{yellow}{(references)}; however, novices nevertheless typically perform better than chance \colorbox{yellow}{(references)}. Previous research highlights the possibility that fingerprint training could be streamlined by incorporating exposure to varying instances, rather than just carefully comparing individual prints (Thompson & Tangen, 2014). It is possible, therefore, that presenting novices with rapid streams of varying fingerprints will help to simulate experts’ experience, therefore improving their fingerprint recognition ability and developing ‘expertise’ more efficiently.
 
-blah blah blah
+more blah blah blah
 
 It is commonly claimed that deliberate analysis is required for accurate fingerprint identification (Busey & Parada, 2010; Cole, 2005); however, recent evidence suggests that fingerprint examiners’ superior identification skills also derive from non-analytic processes that emerge from vast exposure to many different fingerprints over time (Searston & Tangen, 2017a, 2017b; Thompson & Tangen, 2014).
 
