@@ -51,6 +51,16 @@ output            : papaja::apa6_pdf
 
 ```{r setup, include = FALSE}
 library("papaja")
+library(knitr)
+options(digits=3)
+library(tidyverse) ## All the good things
+library(ggbeeswarm) ## Beeswarm plots with ggplot2
+library(RColorBrewer) ## Beautiful colour palettes
+library(viridis) ## More palettes
+library(lawstat) ## Levene's
+source("https://bit.ly/2q4XQ66") ## geom_flat_violin()
+library(ez) ## Analysis of experimental data
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
 ```{r analysis-preferences}
@@ -159,8 +169,130 @@ To examine whether participants’ performance was better than chance, I calcula
 
 As shown in Table 1, my results suggest that participants are better at recognising faces when viewing rapid streams of the same face compared to single images for both upright and inverted conditions, despite discriminability decreasing overall with inverted faces. A repeated measures ANOVA yielded a significant, medium-to-large (see Cohen, 1988 for conventions) main effect of orientation (F(1, 29) = 68.258, p < .001, G2 = .148) and a significant, small-to-medium main effect of image rate (F(3, 87) = 3.788, p = .013, G2 = .041) on participants’ discriminability scores (see Figure 3). No significant interaction was found (F(3, 87) = 1.952, p = .127, G2 = .019). Mauchly’s test for sphericity suggested that the assumption of sphericity was met (image rate: W = .756, p = .17; orientation-image rate interaction: W = .957, p = .942); and so no corrections were applied to the reported p-values. A treatment-control contrast suggested that when compared to viewing a single image, participants’ discriminability scores significantly improved under all rapid presentation rate conditions (2 images: t = 2.192, p = .029; 4 images: t = 2.468, p = .014; 8 images: t = 2.431, p = .016). A subsequent trend analysis also revealed a significant linear trend over presentation rate conditions (t = 2.394, p = .018). That is, discriminability increased in a linear fashion as a function of increasing presentation rate for both upright and inverted faces, despite inverted faces being harder to recognise.
 
-\colorbox{yellow}{[table 1]
-[figure 3]}
+``` {r, echo = FALSE}
+my_data_faces <- read.csv(file="data/my_data_faces.csv", header=TRUE)
+
+acc_data_faces <- my_data_faces %>%
+  select(-Confidence, -Milliseconds) %>%
+  group_by(Participant, Mode, Orientation, Image_Rate) %>% summarise(
+    mean_PC = mean(Accuracy)
+  ) %>%
+  arrange(Orientation, Image_Rate)
+
+secs_data_faces <- my_data_faces %>%
+   select(-Confidence, -Accuracy) %>%
+  group_by(Participant, Mode, Orientation, Image_Rate) %>% summarise(
+    mean_secs = mean(Milliseconds/1000)
+  ) %>%
+  arrange(Orientation, Image_Rate)
+
+sum_data_faces<-merge(acc_data_faces, secs_data_faces, by=c("Participant","Mode","Orientation", "Image_Rate"), all=TRUE)
+
+## LINE 1: number of distractors rated x participant
+line1Face <- my_data_faces %>%  
+  select(-Milliseconds, -Accuracy) %>%
+  group_by(Participant, Mode, Orientation, Image_Rate, Trial_Type) %>% 
+  mutate(conf1=ifelse(Confidence == 1, 1, 0),
+ conf2=ifelse(Confidence == 2, 1, 0),conf3=ifelse(Confidence == 3, 1, 0),
+  conf4=ifelse(Confidence == 4, 1, 0),conf5=ifelse(Confidence == 5, 1, 0),
+  conf6=ifelse(Confidence == 6, 1, 0),conf7=ifelse(Confidence == 7, 1, 0),
+  conf8=ifelse(Confidence == 8, 1, 0),conf9=ifelse(Confidence == 9, 1, 0),
+  conf10=ifelse(Confidence == 10, 1, 0),conf11=ifelse(Confidence == 11, 1, 0),
+  conf12=ifelse(Confidence == 12, 1, 0)) %>% 
+    group_by(Participant, Mode, Orientation, 
+                 Image_Rate, Trial_Type) %>%
+    select(-c(Confidence, Age)) %>%
+    summarise_if(is.numeric, sum) %>%   
+    arrange(Trial_Type, Image_Rate, Orientation,  
+            Participant, Mode) %>% filter(Trial_Type == "different") %>% 
+  gather(Confidence_Rating, Line_1, conf1:conf12)%>%
+    select(-Trial_Type)
+
+## LINE 2: number of targets rated > x
+line2Face <- my_data_faces %>%  
+  select(-Milliseconds, -Accuracy) %>%  
+  group_by(Participant, Mode, Orientation, Image_Rate, Trial_Type) %>% 
+  mutate(conf1=ifelse(Confidence >1, 1, 0),
+  conf2=ifelse(Confidence >2, 1, 0),conf3=ifelse(Confidence >3, 1, 0),
+  conf4=ifelse(Confidence >4, 1, 0),conf5=ifelse(Confidence >5, 1, 0),
+  conf6=ifelse(Confidence >6, 1, 0),conf7=ifelse(Confidence >7, 1, 0),
+  conf8=ifelse(Confidence >8, 1, 0),conf9=ifelse(Confidence >9, 1, 0),
+  conf10=ifelse(Confidence >10, 1, 0),conf11=ifelse(Confidence >11, 1, 0),
+  conf12=ifelse(Confidence >12, 1, 0)) %>% 
+    group_by(Participant, Mode, Orientation, 
+                 Image_Rate, Trial_Type) %>%
+    select(-c(Confidence, Age)) %>%
+    summarise_if(is.numeric, sum) %>%   
+    arrange(Trial_Type, Image_Rate, Orientation,  
+            Participant, Mode) %>% filter (Trial_Type == "same") %>% 
+  gather(Confidence_Rating, Line_2, conf1:conf12)%>%
+    select(-Trial_Type)
+
+## LINE 3: number of targets rated x per participant
+line3Face <- my_data_faces %>%  
+  select(-Milliseconds, -Accuracy) %>%  
+  group_by(Participant, Mode, Orientation, Image_Rate, Trial_Type) %>% 
+  mutate(conf1=ifelse(Confidence == 1, 1, 0),
+  conf2=ifelse(Confidence == 2, 1, 0),conf3=ifelse(Confidence == 3, 1, 0),
+  conf4=ifelse(Confidence == 4, 1, 0),conf5=ifelse(Confidence == 5, 1, 0),
+  conf6=ifelse(Confidence == 6, 1, 0),conf7=ifelse(Confidence == 7, 1, 0),
+  conf8=ifelse(Confidence == 8, 1, 0),conf9=ifelse(Confidence == 9, 1, 0),
+  conf10=ifelse(Confidence == 10, 1, 0),conf11=ifelse(Confidence == 11, 1, 0),
+  conf12=ifelse(Confidence == 12, 1, 0)) %>% 
+    group_by(Participant, Mode, Orientation, 
+                 Image_Rate, Trial_Type) %>%
+    select(-c(Confidence, Age)) %>%
+    summarise_if(is.numeric, sum) %>%   
+    arrange(Trial_Type, Image_Rate, Orientation,  
+            Participant, Mode) %>% filter(Trial_Type == "same") %>% 
+  gather(Confidence_Rating, Line_3, conf1:conf12)%>%
+    select(-Trial_Type)
+
+## Merge Line 1,2 & 3
+confFace<-merge(line1Face, line2Face, by=c("Participant","Mode","Orientation","Image_Rate", "Confidence_Rating"), all=TRUE)
+confFace<-merge(confFace, line3Face, by=c("Participant","Mode", "Orientation","Image_Rate", "Confidence_Rating"), all=TRUE)
+
+## LINE 5: line1 * line2 + 0.5 *line1 * line3
+confFace <-confFace %>% mutate(Line_5 = Line_1*Line_2+.05*Line_1*Line_3) %>%
+   group_by(Participant, Mode, Orientation, Image_Rate) %>%
+   summarise_if(is.numeric, sum)
+
+## Compute AUC (or Wilcoxon's W)
+AUC_data_faces<-confFace %>% mutate(AUC = Line_5/(Line_1*Line_3))%>%
+   select(Participant, Mode, Orientation, Image_Rate, AUC)
+
+sum_data_faces<-merge(sum_data_faces, AUC_data_faces, by=c("Participant","Mode", "Orientation", "Image_Rate"), all=TRUE)
+
+sum_data_faces$Orientation = factor(sum_data_faces$Orientation,levels = c("upright","inverted"), ordered = FALSE)
+sum_data_faces$Image_Rate = factor(sum_data_faces$Image_Rate,levels = c("1 image","2 images","4 images","8 images"), ordered = TRUE)
+
+sum_data_faces_p <- sum_data_faces  %>%
+  filter(Mode == "participant")
+
+AUC_table <- sum_data_faces_p %>%
+  group_by(Orientation, Image_Rate) %>% summarise(
+    mean = mean(AUC),
+    SD = sd(AUC)
+  )
+
+library(kableExtra)
+
+kable(AUC_table) %>%
+  add_header_above(c("Mean Discriminability (AUC)" = 4))
+
+
+PC_table <- sum_data_faces_p %>%
+  group_by(Orientation, Image_Rate) %>% summarise(
+    mean = mean(mean_PC),
+    SD = sd(mean_PC)
+  )
+
+kable(PC_table) %>%
+  add_header_above(c("Mean Discriminability (PC)" = 4))
+
+```
+
+[figure 3]
 
 To address my prediction that confidence will be highest when viewing single images, I analysed participants’ confidence ratings for each condition. As shown in Table 2, participants were more confident at identifying upright compared to inverted faces, though confidence seems similar across different presentation rates. A repeated measures ANOVA revealed a significant, medium-to-large main effect of orientation (F(1, 29) = 8.655, p = .006, G2 = .020), but no significant main effect of image rate (F(3, 87) = 0.785, p = .505, G2 = .002), and no significant interaction (F(3, 87) = 0.365, p = .779, G2 = .001; see Figure 4). Mauchly’s test for sphericity suggests that the assumption of sphericity was met (image rate: W = .923, p = .818; orientation-image rate interaction: W = .885, p = .643); and so no correction was applied to the reported p-values. Given that confidence did not significantly differ across image rate conditions, my data did not support the third hypothesis.
 
