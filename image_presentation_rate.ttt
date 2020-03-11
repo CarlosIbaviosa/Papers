@@ -1,0 +1,56 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{tab:unnamed-chunk-1}Descriptive statistics for recognition performance in Experiment 1}
+\centering
+\begin{tabular}[t]{l|l|r|r}
+\hline
+Orientation & Image\_Rate & mean & SD\\
+\hline
+upright & 1 image & 0.548 & 0.216\\
+\hline
+upright & 2 images & 0.715 & 0.242\\
+\hline
+upright & 4 images & 0.698 & 0.208\\
+\hline
+upright & 8 images & 0.684 & 0.176\\
+\hline
+inverted & 1 image & 0.462 & 0.163\\
+\hline
+inverted & 2 images & 0.473 & 0.202\\
+\hline
+inverted & 4 images & 0.513 & 0.218\\
+\hline
+inverted & 8 images & 0.524 & 0.201\\
+\hline
+\end{tabular}
+\end{table*}
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{tab:unnamed-chunk-1}caption}
+\centering
+\begin{tabular}[t]{l|l|r|r|r}
+\hline
+Orientation & Image\_Rate & mean & variance & SD\\
+\hline
+upright & 1 image & 0.619 & 0.019 & 0.138\\
+\hline
+upright & 2 images & 0.733 & 0.036 & 0.190\\
+\hline
+upright & 4 images & 0.733 & 0.023 & 0.151\\
+\hline
+upright & 8 images & 0.733 & 0.019 & 0.139\\
+\hline
+inverted & 1 image & 0.542 & 0.014 & 0.117\\
+\hline
+inverted & 2 images & 0.547 & 0.021 & 0.145\\
+\hline
+inverted & 4 images & 0.625 & 0.020 & 0.143\\
+\hline
+inverted & 8 images & 0.603 & 0.021 & 0.145\\
+\hline
+\end{tabular}
+\end{table*}
