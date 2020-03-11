@@ -100,12 +100,15 @@ In both experiments, while recognition accuracy may be higher when viewing more 
 
 # Experiment 1
 ## Methods
-The preregistration plan [add link] for this study is available on the Open Science Framework (OSF), and includes our predictions and hypotheses, methodology, power analysis, analysis plan, and links to all available materials, software, raw data files, and R markdown scripts.
+The preregistration plan [add link] for both experiments is available on the Open Science Framework (OSF), and includes our predictions and hypotheses, methodology, power analysis, analysis plan, and links to all available materials, software, raw data files, and R markdown scripts.
 
 ### Participants
 30 participants took part in this experiment (19 male, 11 female, mean age of 25) consisting of students from the University of Adelaide and members of the general Adelaide population. All participants were required to be at least 18 years of age, fluent in English, and have normal or corrected-to-normal vision. Participants were incentivised by receiving a $20 Coles/Myer gift card in exchange for their time (see Appendix A). All participants provided informed consent prior to commencing the experiment (see Appendix B).
 
 Participants’ responses were to be excluded if they failed to complete the experiment due to illness, fatigue or excessive response delays (i.e., longer than the session allows). Participants who responded in less than 500ms, or consecutively provided the same response, for over 30 percent of trials were also to be excluded. In these cases, another participant was to be recruited and given the same stimulus set according to the previous participant’s experiment number. None of the 30 participants met any of these pre-specified exclusion criteria.
+
+### Power Analysis
+To our knowledge, no previous research has analysed the effect of image presentation rate in a face recognition task. The sample size was determined based on a power analysis assuming a Smallest Effect Size of Interest (SESOI; Lakens, Scheel, Isagar, 2018) of *d* = 0.45 for all effects. Previous studies on face recognition typically show face inversion effect sizes ranging between 0.96 and 1.29 (e.g., Civile, Elchlepp, McLaren, Galang, Lavric, & McLaren, 2018), and so this SESOI was a conservative estimate. With a sample of 30 participants and 96 observations per participant (12 trials x 4 different image presentation rates x 2 levels of image orientation = 96 trials), the experiment had an estimated power of 83.2% to detect a main effect of image presentation rate, and an estimated power of 98.2% to detect an interaction between image presentation rate and orientation. We used Jake Westfall’s PANGEA R Shiny App to calculate power given these design parameters.
 
 ### Design
 This experiment had a 4 (presentation rate: single image, 2, 4, 8 images per second) x 2 (orientation: upright vs. inverted) fully within-subjects design. In Experiment 1, participants were presented with a series of 96 face streams for eight seconds. Presentation rate varied across the streams, with participants viewing streams of 64 face images for 125 milliseconds each (8 images per second), streams of 32 face images for 250 milliseconds each (4 images per second), streams of 16 images for 500 milliseconds each (2 images per second), and single images of faces for eight seconds. After a brief 500 millisecond delay, a new ‘target’ face image from either the same or different person was displayed and participants indicated on a scale whether they believed this new face was the same or different person as the face in the stream, and their confidence in their decision (see Figure 2).
@@ -138,8 +141,9 @@ Participants commenced the task after reading an information sheet, signing a co
 \colorbox{yellow}{[Report paired comparisons – and any other instances where significant differences would be unlikely…]
 [Make sure symbols in stats blocks are all correct - generalised eta squared...]
 [insert figures and tables]]
+[reference additional files appropriately - appendix or nah?]
 
-The following analysis examines participants' discriminability (AUC) scores and confidence. Raw proportion correct scores can be found in the Appendix.
+The following analysis examines participants' discriminability (AUC) scores and confidence. Raw proportion correct scores reflect the same pattern as discriminability, and can be found in the Appendix.
 
 ### Presentation Rate and Orientation
 We conducted repeated measures ANOVAs on participants’ AUC scores to test whether their ability to distinguish faces of the same versus different identities significantly increased as presentation rate increased, and whether these effects varied as a function of familiarity with the stimulus orientation. As shown in Table 1, our results suggest that participants are better at recognising faces when viewing rapid streams of the same face compared to single images for both upright and inverted conditions, despite discriminability being lower overall with inverted faces compared to upright faces. A repeated measures ANOVA yielded a significant, medium-to-large (see Cohen, 1988 for conventions) main effect of orientation (F(1, 29) = 68.258, p < .001, G2 = .148) and a significant, small-to-medium main effect of image rate (F(3, 87) = 3.788, p = .013, G2 = .041) on participants’ discriminability scores (see Figure 3). No significant interaction was found (F(3, 87) = 1.952, p = .127, G2 = .019). A treatment-control contrast suggested that when compared to viewing a single image, participants’ discriminability scores significantly improved under all rapid presentation rate conditions (2 images: t = 2.192, p = .029; 4 images: t = 2.468, p = .014; 8 images: t = 2.431, p = .016). A subsequent trend analysis also revealed a significant linear trend over presentation rate conditions (t = 2.394, p = .018). That is, discriminability increased in a linear fashion as a function of increasing presentation rate for both upright and inverted faces, despite inverted faces being harder to recognise.
@@ -275,12 +279,10 @@ To address our prediction that confidence will be highest when viewing single im
 [figure 4]}
 
 ## Discussion
-\colorbox{yellow}{[Address methodological limitations – e.g., gender, ethnicity, celebrity status]
+\colorbox{yellow}{[Address methodological limitations – e.g., gender, ethnicity]
 [Address theoretical limitations – e.g., innate attention to face-like objects]}
 
-- Race
-  - Other race faces much harder to recognise, presumably because we typically have much more experience in recognising faces from our own race
-  - Other theories?? Does it exist??
+
 - Gender
   - ??
  
@@ -292,7 +294,13 @@ Our results also suggest that the benefit associated with increasing image rate 
 I also suspected a lesser advantage for upright faces due to the flashed-face distortion effect (FFDE). The FFDE refers to the apparent distortion of upright (but not inverted) faces presented in an RSVP stream of different random faces, and is thought to emerge due to  the relative differences between facial features contrasting from one identity to the next (Tangen et al., 2011). The lack of interaction between orientation conditions, however, suggests that the FFDE had no detrimental effect on either condition. Given that each face in the streams belonged to the same person in the current experiment, rather than different people as is typically the case with FFDE studies (e.g., Balas & Pearson, 2019; Bowden et al., 2019), it may be that the commonalities across each face image were exaggerated, rather than the differences, thereby increasing performance when viewing rapid streams. However, given that I did not directly manipulate the FFDE, future experiments may wish to explicitly measure the potential influence of this effect in similar face recognition tasks, to investigate whether it aids encoding of an unfamiliar face.
 
 ### Limitations
-One minor limitation regarding the current methodology is that, given that the selected database sampled faces from Google Images, several of the identities depicted celebrities. Although this provided a suitably large sample of naturally varying face images that could not be found in other databases, this may have increased participants’ performance in some trials and inflated my effect sizes, as familiar faces are easier to recognise than unfamiliar faces (Megreya & Burton, 2006). Although an informal post-experiment assessment of each participant’s prior familiarity with each face demonstrated that most participants were unfamiliar with most of the faces regardless, future research may wish to use a dataset containing exclusively unfamiliar faces if possible.
+One minor limitation regarding the current methodology is that, given that the selected database sampled faces from Google Images, several of the identities depicted celebrities. Although this provided a suitably large sample of naturally varying face images that could not be found in other databases, this may have increased participants’ performance in some trials and inflated our effect sizes, as familiar faces are easier to recognise than unfamiliar faces (Megreya & Burton, 2006). While we could have removed the celebrity faces during pilot testing, we decided not to, as the face inversion effect is also present even with celebrity faces \colorbox{yellow}{(references)}, and even if celebrity faces facilitated recognition at certain image rates, we believed it would be overshadowed by the majority of unfamiliar faces. Indeed, an informal post-experiment assessment (available in the Data section of the OSF page) of each participant’s prior familiarity with each face demonstrated that the vast majority of identities were unfamiliar to most participants, and so our results are unlikely to be significantly impacted by this confound. Nevertheless, future research may wish to use a dataset containing exclusively unfamiliar faces if possible.
+
+Another limitation to note is the possible interference of the own-race bias, given that all our identities depicted Caucasian faces. 
+
+- Race
+  - Other race faces much harder to recognise, presumably because we typically have much more experience in recognising faces from our own race
+  - Other theories?? Does it exist??
 
 # Experiment 2
 Experiment 1 suggests that presenting similar images in an RSVP stream can facilitate the identification of new instances even when viewing less familiar stimuli (e.g., inverted faces). This method of rapidly presenting multiple similar instances may also be useful in improving performance in other disciplines that rely on identifying naturally varying images—such as fingerprint examination (see Figure 5).
